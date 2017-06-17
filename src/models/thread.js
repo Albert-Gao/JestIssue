@@ -30,11 +30,8 @@ const ThreadSchema = new mongoose.Schema({
 /* Static methods*/
 ThreadSchema.statics = {
     addLike(threadID, user) {
-        const updateAsync = Promise.promisify(
-            this.update, { context: this }
-        );
         return new Promise((resolve, reject) => {
-            updateAsync(
+            this.update(
                 {
                     _id: threadID,
                     'likes.users.id': { $ne: user.id },
@@ -43,18 +40,20 @@ ThreadSchema.statics = {
                     $push: { 'likes.users': user },
                     $inc: { 'likes.count': 1 },
                 },
-                { safe: true }
-            )
-                .then((result) => {
+                { safe: true },
+                (err, result) => {
+                    if (err) {
+                        reject(err);
+                        return;                    
+                    }
+
                     if (result.nModified) {
                         resolve(result);
                     } else {
                         reject(new Error('Already liked or no such thread.'));
                     }
-                })
-                .catch((err) => {
-                    reject(err);
-                });
+                }
+            )
         });
 
     },
