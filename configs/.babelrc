@@ -1,0 +1,8 @@
+{
+  "presets": ["env"],
+  "ignore": [
+    "tests/",
+    "dist/",
+    "node_modules/"
+  ]
+}

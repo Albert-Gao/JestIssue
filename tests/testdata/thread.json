@@ -1,0 +1,27 @@
+{
+    "normalThread": {
+        "author": {
+            "id": "593a9ea21736ec9b1a9e909a",
+            "screen_name": "Albert",
+            "picture": "http://projectTalk.com/albert.png"
+        },
+        "theme": "beautifulDunedin",
+        "text": "This is a test",
+        "comments": {
+            "count": 3
+        },
+        "likes": {
+            "count": 1,
+            "users": {
+                "id": "593a9ea21736ec9b1a9e909a",
+                "screen_name": "Albert",
+                "picture": "http://projectTalk.com/albert.png"
+            }
+        }
+    },
+    "newAuthor": {
+        "id": "5945056f0f5fd0764efc18a0",
+        "screen_name": "Ben",
+        "picture": "http://projectTalk.com/Ben.png"
+    }
+}

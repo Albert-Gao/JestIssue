@@ -1,0 +1,37 @@
+{
+  "name": "JestIssue",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jest --config=configs/jest.config.json"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "social",
+    "node",
+    "react"
+  ],
+  "author": "Albert Gao",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.2",
+    "jest": "^20.0.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "mongoose": "^4.10.6"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "ignore": [
+      "dist/",
+      "node_modules/"
+    ]
+  }
+}
