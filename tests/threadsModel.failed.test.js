@@ -1,51 +1,62 @@
 /**
  * @environment node
  */
-// global.Promise = require.requireActual('bluebird');
+global.Promise = require.requireActual('bluebird');
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
-const mongoDB = require('../src/config/mongodb');
-const ThreadModel = require('../src/models/thread');
+const ThreadSchema = require('../src/models/thread').ThreadSchema;
 
 const testData = require('./testdata/thread.json');
 
 process.env.NODE_ENV = 'test';
-
+const CS = "mongodb://localhost/projectTalkTest";
 
 describe('Test the addLike method', () => {
-    const thread = new ThreadModel(testData.normalThread);
+    let connection;
+    let threadModel;
+    let thread;
     const author = testData.normalThread.author;
 
     beforeAll(() => {
-        mongoDB.connect();
+        connection = mongoose.createConnection(CS);
+        threadModel = connection.model('Thread', ThreadSchema);
     });
 
-    beforeEach(() => {
-        return thread.save();
+    beforeEach(async () => {
+        thread = new threadModel(testData.normalThread);
+        await thread.save();
+
     });
 
-    afterEach(() => {
-        return thread.remove();
+    afterEach((done)=>{
+        threadModel.remove({}, ()=>{
+            done();
+        });
+        // connection.collections['threads'].drop((err)=>{
+        //     if (!err) done();
+        // });
+        //connection.db.dropDatabase(done);
     });
 
     afterAll((done) => {
-        ThreadModel.remove({}, () => {
-            mongoDB.disconnect();
-            done();
-        });
+        connection.close(done);
     });
 
     test('Should return error when already liked', () => {
-        return ThreadModel.addLike(thread.id, author)
+        return threadModel.addLike(thread.id, author)
             .catch((err) => {
                 expect(err).toBeTruthy();
                 expect(err.message).toEqual('Already liked or no such thread.');
             });
     });
-    
+
     test('Should return result when ok', () => {
         const newUser = testData.newAuthor;
-        return ThreadModel.addLike(thread.id, newUser).then((result) => {
+        return threadModel.addLike(thread.id, newUser).then((result) => {
             expect(result).toEqual({ n: 1, nModified: 1, ok: 1 });
+        }).catch((err)=>{
+            expect(err).toBeFalsy();
         });
     });
 });

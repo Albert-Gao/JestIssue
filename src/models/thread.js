@@ -62,4 +62,4 @@ ThreadSchema.statics = {
 
 const ThreadModel = mongoose.model('Thread', ThreadSchema);
 
-module.exports = ThreadModel;
+module.exports = {ThreadSchema, ThreadModel};
